@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
+
+getent group ${SYS_GROUP} || addgroup -S ${SYS_GROUP}
+getent passwd ${SYS_USER} || adduser -S ${SYS_USER}  -G ${SYS_GROUP} -s "/bin/bash" -h "/home/barman/"
+
+
+
 chown -R ${SYS_USER}:${SYS_GROUP} $BACKUP_DIR
 
 echo ">>> Checking all configurations"
@@ -25,10 +31,14 @@ retention_policy = RECOVERY WINDOW OF $BACKUP_RETENTION_DAYS DAYS
 " >> $UPSTREAM_CONFIG_FILE
 
 
+
+sed -i "s/#*\(barman_user\).*/\1 = '${SYS_USER}'/;" /etc/barman.conf
+
 echo '>>> SETUP BARMAN CRON'
 echo ">>>>>> Backup schedule is $BACKUP_SCHEDULE"
 echo "$BACKUP_SCHEDULE root barman backup all > /proc/1/fd/1 2> /proc/1/fd/2" >> /etc/cron.d/barman
 chmod 0644 /etc/cron.d/barman
+
 
 echo '>>> STARTING METRICS SERVER'
 /go/main &

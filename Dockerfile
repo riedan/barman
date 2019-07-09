@@ -6,7 +6,7 @@ ENV SYS_GROUP barman
 #create user if not exist
 RUN set -eux; \
 	getent group ${SYS_GROUP} || addgroup -S ${SYS_GROUP}; \
-	getent passwd ${SYS_USER} || adduser -S ${SYS_USER}  -G ${SYS_GROUP} -s "/bin/bash" -h /home/postgres/;
+	getent passwd ${SYS_USER} || adduser -S ${SYS_USER}  -G ${SYS_GROUP} -s "/bin/bash" -h /home/barman/;
 
 
 RUN set -ex \
