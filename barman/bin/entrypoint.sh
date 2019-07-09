@@ -3,7 +3,7 @@ set -e
 
 
 getent group ${SYS_GROUP} || addgroup -S ${SYS_GROUP}
-getent passwd ${SYS_USER} || adduser -S ${SYS_USER}  -G ${SYS_GROUP} -s "/bin/bash" -h "/home/barman/"
+getent passwd ${SYS_USER} || adduser -S ${SYS_USER}  -G ${SYS_GROUP} -s "/bin/bash" -h "/home/barman"
 
 
 
@@ -23,8 +23,8 @@ backup_method = postgres
 streaming_archiver = on
 streaming_archiver_name = barman_receive_wal
 streaming_archiver_batch_size = 50
-streaming_conninfo = host=$REPLICATION_HOST user=$REPLICATION_USER password=$REPLICATION_PASSWORD port=$REPLICATION_PORT
-conninfo = host=$REPLICATION_HOST dbname=$POSTGRES_DB user=$POSTGRES_USER password=$POSTGRES_PASSWORD port=$REPLICATION_PORT connect_timeout=$POSTGRES_CONNECTION_TIMEOUT
+streaming_conninfo = host=$REPLICATION_HOST user=$REPLICATION_USER password=$REPLICATION_PASSWORD port=$REPLICATION_PORT sslmode=verify-full
+conninfo = host=$REPLICATION_HOST dbname=$POSTGRES_DB user=$POSTGRES_USER password=$POSTGRES_PASSWORD port=$REPLICATION_PORT connect_timeout=$POSTGRES_CONNECTION_TIMEOUT sslmode=verify-full
 slot_name = $REPLICATION_SLOT_NAME
 backup_directory = $BACKUP_DIR
 retention_policy = RECOVERY WINDOW OF $BACKUP_RETENTION_DAYS DAYS
