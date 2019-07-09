@@ -45,5 +45,5 @@ echo '>>> STARTING METRICS SERVER'
 
 echo '>>> STARTING CRON'
 env >> /etc/environment
-cron -f
+crond -f
 
