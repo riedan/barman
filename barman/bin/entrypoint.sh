@@ -8,6 +8,7 @@ getent passwd ${SYS_USER} || adduser -S ${SYS_USER}  -G ${SYS_GROUP} -s "/bin/ba
 
 
 chown -R ${SYS_USER}:${SYS_GROUP} $BACKUP_DIR
+chown -R ${SYS_USER}:${SYS_GROUP} /home/barman
 
 echo ">>> Checking all configurations"
 [[ "$REPLICATION_HOST" != "" ]] || ( echo 'Variable REPLICATION_HOST is not set!' ;exit 1 )
@@ -23,8 +24,8 @@ backup_method = postgres
 streaming_archiver = on
 streaming_archiver_name = barman_receive_wal
 streaming_archiver_batch_size = 50
-streaming_conninfo = host=$REPLICATION_HOST user=$REPLICATION_USER password=$REPLICATION_PASSWORD port=$REPLICATION_PORT sslmode=verify-full
-conninfo = host=$REPLICATION_HOST dbname=$POSTGRES_DB user=$POSTGRES_USER password=$POSTGRES_PASSWORD port=$REPLICATION_PORT connect_timeout=$POSTGRES_CONNECTION_TIMEOUT sslmode=verify-full
+streaming_conninfo = host=$REPLICATION_HOST user=$REPLICATION_USER password=$REPLICATION_PASSWORD port=$REPLICATION_PORT sslmode=prefer
+conninfo = host=$REPLICATION_HOST dbname=$POSTGRES_DB user=$POSTGRES_USER password=$POSTGRES_PASSWORD port=$REPLICATION_PORT connect_timeout=$POSTGRES_CONNECTION_TIMEOUT sslmode=prefer
 slot_name = $REPLICATION_SLOT_NAME
 backup_directory = $BACKUP_DIR
 retention_policy = RECOVERY WINDOW OF $BACKUP_RETENTION_DAYS DAYS
@@ -36,7 +37,8 @@ sed -i "s/#*\(barman_user\).*/\1 = '${SYS_USER}'/;" /etc/barman.conf
 
 echo '>>> SETUP BARMAN CRON'
 echo ">>>>>> Backup schedule is $BACKUP_SCHEDULE"
-echo "$BACKUP_SCHEDULE root barman backup all > /proc/1/fd/1 2> /proc/1/fd/2" >> /etc/cron.d/barman
+echo  "*/1 * * * * ${SYS_USER} cd /home/barman && /usr/local/bin/barman_docker/wal-receiver.sh > /proc/1/fd/1 2> /proc/1/fd/2" > /etc/cron.d/barman
+echo "$BACKUP_SCHEDULE ${SYS_USER} barman backup all > /proc/1/fd/1 2> /proc/1/fd/2" >> /etc/cron.d/barman
 chmod 0644 /etc/cron.d/barman
 
 
