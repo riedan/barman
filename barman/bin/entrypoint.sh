@@ -7,7 +7,6 @@ getent passwd ${SYS_USER} || adduser -S ${SYS_USER}  -G ${SYS_GROUP} -s "/bin/ba
 
 
 
-chown -R ${SYS_USER}:${SYS_GROUP} $BACKUP_DIR
 chown -R ${SYS_USER}:${SYS_GROUP} /home/barman
 
 echo ">>> Checking all configurations"
