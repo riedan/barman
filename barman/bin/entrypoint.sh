@@ -36,8 +36,8 @@ sed -i "s/#*\(barman_user\).*/\1 = '${SYS_USER}'/;" /etc/barman.conf
 
 echo '>>> SETUP BARMAN CRON'
 echo ">>>>>> Backup schedule is $BACKUP_SCHEDULE"
-echo  "*/1 * * * * ${SYS_USER} cd /home/barman && /usr/local/bin/barman_docker/wal-receiver.sh > /proc/1/fd/1 2> /proc/1/fd/2" > /var/spool/cron/crontabs/${SYS_USER}
-echo "$BACKUP_SCHEDULE ${SYS_USER} barman backup all > /proc/1/fd/1 2> /proc/1/fd/2" >> /var/spool/cron/crontabs/${SYS_USER}
+echo  "*/1 * * * * cd /home/barman && /usr/local/bin/barman_docker/wal-receiver.sh > /proc/1/fd/1 2> /proc/1/fd/2" > /var/spool/cron/crontabs/${SYS_USER}
+echo "$BACKUP_SCHEDULE barman backup all > /proc/1/fd/1 2> /proc/1/fd/2" >> /var/spool/cron/crontabs/${SYS_USER}
 chmod 0644 /var/spool/cron/crontabs/${SYS_USER}
 
 
