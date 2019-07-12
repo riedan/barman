@@ -36,9 +36,10 @@ sed -i "s/#*\(barman_user\).*/\1 = '${SYS_USER}'/;" /etc/barman.conf
 
 echo '>>> SETUP BARMAN CRON'
 echo ">>>>>> Backup schedule is $BACKUP_SCHEDULE"
-echo  "*/1 * * * * ${SYS_USER} cd /home/barman && /usr/local/bin/barman_docker/wal-receiver.sh > /proc/1/fd/1 2> /proc/1/fd/2" > /etc/cron.d/barman
-echo "$BACKUP_SCHEDULE ${SYS_USER} barman backup all > /proc/1/fd/1 2> /proc/1/fd/2" >> /etc/cron.d/barman
-chmod 0644 /etc/cron.d/barman
+echo  "*/1 * * * * ${SYS_USER} cd /home/barman && /usr/local/bin/barman_docker/wal-receiver.sh > /proc/1/fd/1 2> /proc/1/fd/2" > /var/spool/cron/crontabs/barman
+echo "$BACKUP_SCHEDULE ${SYS_USER} barman backup all > /proc/1/fd/1 2> /proc/1/fd/2" >> /var/spool/cron/crontabs/barman
+chown /var/spool/cron/crontabs/barman
+chmod 0644 /var/spool/cron/crontabs/barman
 
 
 echo '>>> STARTING METRICS SERVER'
@@ -46,5 +47,5 @@ echo '>>> STARTING METRICS SERVER'
 
 echo '>>> STARTING CRON'
 env >> /etc/environment
-crond -f
+su-exec ${SYS_USER} crond -f -l 4 -d 4 -L /var/log/barman.log
 

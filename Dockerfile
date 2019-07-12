@@ -11,7 +11,7 @@ RUN set -eux; \
 
 RUN set -ex \
 	\
-	&& apk add --no-cache  ca-certificates su-exec bash inotify-tools \
+	&& apk add --no-cache  ca-certificates su-exec bash inotify-tools  busybox-suid\
 	                        postgresql-client \
 	&& apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ --allow-untrusted barman
 
