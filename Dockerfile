@@ -52,4 +52,6 @@ RUN cd /go && go build /go/main.go
 
 VOLUME $BACKUP_DIR
 
-CMD /usr/local/bin/barman_docker/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/barman_docker/entrypoint.sh"]
+
+CMD ["crond","-f" ,"-l 4", "-d 4", "-L", "/var/log/barman.log"]
