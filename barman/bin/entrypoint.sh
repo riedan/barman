@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-if [  -z "$(ls -A /certs/)" ]; then
+if [ "$(ls -A /certs/)" ]; then
   cp /certs/* /usr/local/share/ca-certificates/.
   update-ca-certificates
 fi
