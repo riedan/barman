@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
+if [  -z "$(ls -A /certs/)" ]; then
+  cp /certs/* /usr/local/share/ca-certificates/.
+  update-ca-certificates
+fi
 
 getent group ${SYS_GROUP} || addgroup -S ${SYS_GROUP}
 getent passwd ${SYS_USER} || adduser -S ${SYS_USER}  -G ${SYS_GROUP} -s "/bin/bash" -h "/home/barman"
@@ -8,8 +12,6 @@ getent passwd ${SYS_USER} || adduser -S ${SYS_USER}  -G ${SYS_GROUP} -s "/bin/ba
 chown -Rf ${SYS_USER}:${SYS_GROUP} /home/barman
 chown -Rf ${SYS_USER}:${SYS_GROUP} $BACKUP_DIR
 
-cp /etc/pki/tls/certs/ca-bundle.crt /usr/local/share/ca-certificates/ca-bundle.crt
-update-ca-certificates
 
 echo ">>> Checking all configurations"
 [[ "$REPLICATION_HOST" != "" ]] || ( echo 'Variable REPLICATION_HOST is not set!' ;exit 1 )
