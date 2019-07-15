@@ -2,7 +2,7 @@
 set -e
 
 if [ "$(ls -A /certs/)" ]; then
-  cp /certs/* /usr/local/share/ca-certificates/.
+  cp /certs/.* /usr/local/share/ca-certificates/
   update-ca-certificates
 fi
 
@@ -51,7 +51,7 @@ echo '>>> STARTING METRICS SERVER'
 
 
 su-exec  ${SYS_USER} /usr/local/bin/barman_docker/wal-receiver.sh
-su-exec  ${SYS_USER} barman switch-wal --force --archive pg
+su-exec  ${SYS_USER} barman switch-wal --force --archive $UPSTREAM_NAME
 
 echo '>>> STARTING CRON'
 env >> /etc/environment
