@@ -52,6 +52,9 @@ echo '>>> STARTING METRICS SERVER'
 
 su-exec  ${SYS_USER} /usr/local/bin/barman_docker/wal-receiver.sh
 
+if [ -d "$BACKUP_DIR/base" ]; then
+  barman switch-wal --force --archive $UPSTREAM_NAME
+fi
 
 echo '>>> STARTING CRON'
 env >> /etc/environment
