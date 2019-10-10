@@ -10,7 +10,7 @@ getent group ${SYS_GROUP} || addgroup -S ${SYS_GROUP}
 getent passwd ${SYS_USER} || adduser -S ${SYS_USER}  -G ${SYS_GROUP} -s "/bin/bash" -h "/home/barman"
 
 chown -Rf ${SYS_USER}:${SYS_GROUP} /home/barman || true
-chown -Rf ${SYS_USER}:${SYS_GROUP} $BACKUP_DIR || true
+chown  ${SYS_USER}:${SYS_GROUP} $BACKUP_DIR || true
 
 
 echo ">>> Checking all configurations"
