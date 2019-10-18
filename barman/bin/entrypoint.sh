@@ -45,6 +45,7 @@ echo  "*/1 * * * * cd /home/barman && /usr/local/bin/barman_docker/wal-receiver.
 echo "$BACKUP_SCHEDULE barman backup all" >> /var/spool/cron/crontabs/${SYS_USER}
 chmod 0644 /var/spool/cron/crontabs/${SYS_USER}
 
+echo  "/var/log/barman.log { \n monthly \n size 100M \n rotate 12 \n compress \n delaycompress \n missingok \n notifempty \n create 644 ${SYS_USER} ${SYS_GROUP} \n}"
 
 echo '>>> STARTING METRICS SERVER'
 /go/main &
@@ -53,7 +54,7 @@ echo '>>> STARTING METRICS SERVER'
 su-exec  ${SYS_USER} /usr/local/bin/barman_docker/wal-receiver.sh
 
 if [ -d "$BACKUP_DIR/base" ]; then
-  barman switch-wal --force --archive $UPSTREAM_NAME
+  su-exec  ${SYS_USER}  barman switch-wal --force --archive $UPSTREAM_NAME
 fi
 
 echo '>>> STARTING CRON'
