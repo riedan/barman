@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM alpine:3.10
 
 ENV SYS_USER barman
 ENV SYS_GROUP barman
@@ -12,12 +12,15 @@ RUN set -eux; \
 RUN set -ex \
 	\
 	&& apk add --no-cache  ca-certificates su-exec bash inotify-tools logrotate busybox-suid\
-	                        postgresql-client \
+	                        postgresql-client python3 \
 	&& apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ --allow-untrusted barman
 
 ADD barman/crontab /etc/cron.d/barman
 
 RUN rm -f /etc/cron.daily/*
+
+RUN set -eux; \
+ pip3 install prometheus_client sh
 
 ENV UPSTREAM_NAME pg_cluster
 ENV UPSTREAM_CONFIG_FILE /etc/barman.d/upstream.conf
@@ -46,6 +49,8 @@ COPY ./barman/configs/barman.conf /etc/barman.conf
 COPY ./barman/configs/upstream.conf $UPSTREAM_CONFIG_FILE
 COPY ./barman/bin /usr/local/bin/barman_docker
 RUN chmod +x /usr/local/bin/barman_docker/* && ls /usr/local/bin/barman_docker
+
+COPY ./barman/metrics/barman_exporter.py  /usr/local/bin/barman_exporter
 
 COPY ./barman/metrics /go
 RUN cd /go && go build /go/main.go
