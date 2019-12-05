@@ -52,8 +52,8 @@ RUN chmod +x /usr/local/bin/barman_docker/* && ls /usr/local/bin/barman_docker
 
 COPY ./barman/metrics/barman_exporter.py  /usr/local/bin/barman_exporter
 
-COPY ./barman/metrics /go
-RUN cd /go && go build /go/main.go
+#COPY ./barman/metrics /go
+#RUN cd /go && go build /go/main.go
 
 VOLUME $BACKUP_DIR
 
