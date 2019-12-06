@@ -48,6 +48,7 @@ EXPOSE 22
 COPY ./barman/configs/barman.conf /etc/barman.conf
 COPY ./barman/configs/upstream.conf $UPSTREAM_CONFIG_FILE
 COPY ./barman/bin /usr/local/bin/barman_docker
+RUN chmod +x /usr/local/bin/barman_docker
 RUN chmod +x /usr/local/bin/barman_docker/* && ls /usr/local/bin/barman_docker
 
 COPY ./barman/metrics/barman_exporter.py  /usr/local/bin/barman_exporter
