@@ -48,7 +48,7 @@ chmod 0644 /var/spool/cron/crontabs/${SYS_USER}
 echo  "/var/log/barman.log { \n monthly \n size 100M \n rotate 12 \n compress \n delaycompress \n missingok \n notifempty \n create 644 ${SYS_USER} ${SYS_GROUP} \n}"
 
 echo '>>> STARTING METRICS SERVER'
-barman_exporter -l 0.0.0.0:8080 all &
+#barman_exporter -l 0.0.0.0:8080 all &
 
 
 su-exec  ${SYS_USER} /usr/local/bin/barman_docker/wal-receiver.sh
