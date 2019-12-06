@@ -12,8 +12,7 @@ RUN set -eux; \
 RUN set -ex \
 	\
 	&& apk add --no-cache  ca-certificates su-exec bash inotify-tools logrotate busybox-suid\
-	                        postgresql-client python3 \
-	&& apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ --allow-untrusted barman
+	                        postgresql-client python3
 
 ADD barman/crontab /etc/cron.d/barman
 
