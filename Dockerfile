@@ -12,14 +12,14 @@ RUN set -eux; \
 RUN set -ex \
 	\
 	&& apk add --no-cache  ca-certificates su-exec bash inotify-tools logrotate busybox-suid\
-	                        postgresql-client python3
+	                        postgresql-client python3 py3-psycopg2
 
 ADD barman/crontab /etc/cron.d/barman
 
 RUN rm -f /etc/cron.daily/*
 
 RUN set -eux; \
- pip3 install prometheus_client sh barman
+ pip3 install barman prometheus_client sh
 
 ENV UPSTREAM_NAME pg_cluster
 ENV UPSTREAM_CONFIG_FILE /etc/barman.d/upstream.conf
