@@ -20,7 +20,7 @@ ADD barman/crontab /etc/cron.d/barman
 RUN rm -f /etc/cron.daily/*
 
 RUN set -eux; \
- pip3 install prometheus_client sh
+ pip3 install prometheus_client sh barman
 
 ENV UPSTREAM_NAME pg_cluster
 ENV UPSTREAM_CONFIG_FILE /etc/barman.d/upstream.conf
