@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3.6
 
 ENV SYS_USER barman
 ENV SYS_GROUP barman
