@@ -8,7 +8,8 @@ RUN set -eux; \
 	getent group ${SYS_GROUP} || addgroup -S ${SYS_GROUP}; \
 	getent passwd ${SYS_USER} || adduser -S ${SYS_USER}  -G ${SYS_GROUP} -s "/bin/bash" -h /home/barman/;
 
-
+RUN rm -rf /var/cache/apk/* && \
+    rm -rf /tmp/*
 
 RUN set -ex \
 	apk update && \
