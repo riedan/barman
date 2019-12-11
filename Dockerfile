@@ -15,7 +15,7 @@ RUN set -ex \
 	apk update && \
   apk --update upgrade && \
 	apk --update add --no-cache  ca-certificates su-exec bash inotify-tools logrotate busybox-suid\
-	                        postgresql-client python3 py3-psycopg2
+	                        postgresql-client	postgresql-bdr python3 py3-psycopg2
 
 ADD barman/crontab /etc/cron.d/barman
 
