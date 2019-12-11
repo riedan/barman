@@ -12,7 +12,7 @@ RUN set -eux; \
 RUN set -ex \
 	\
 	&& apk add --no-cache  ca-certificates su-exec bash inotify-tools logrotate busybox-suid\
-	                        postgresql-client python3 py3-psycopg2
+	                        postgresql-client~=9.6.13 python3 py3-psycopg2
 
 ADD barman/crontab /etc/cron.d/barman
 
