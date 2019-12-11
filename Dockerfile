@@ -9,9 +9,11 @@ RUN set -eux; \
 	getent passwd ${SYS_USER} || adduser -S ${SYS_USER}  -G ${SYS_GROUP} -s "/bin/bash" -h /home/barman/;
 
 
+
 RUN set -ex \
-	\
-	&& apk add --no-cache  ca-certificates su-exec bash inotify-tools logrotate busybox-suid\
+	apk update && \
+  apk upgrade && \
+	apk add --no-cache  ca-certificates su-exec bash inotify-tools logrotate busybox-suid\
 	                        postgresql-client~=9.6.13 python3 py3-psycopg2
 
 ADD barman/crontab /etc/cron.d/barman
