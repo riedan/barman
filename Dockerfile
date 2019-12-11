@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM postgres:9.6-alpine
 
 ENV SYS_USER barman
 ENV SYS_GROUP barman
@@ -14,8 +14,8 @@ RUN rm -rf /var/cache/apk/* && \
 RUN set -ex \
 	apk update && \
   apk --update upgrade && \
-	apk --update add --no-cache  ca-certificates su-exec bash inotify-tools logrotate busybox-suid\
-	                        postgresql-client	postgresql-bdr python3 py3-psycopg2
+	apk --update add --no-cache  ca-certificates su-exec bash inotify-tools logrotate busybox-suid openssl \
+	                        python3 py3-psycopg2
 
 ADD barman/crontab /etc/cron.d/barman
 
