@@ -1,4 +1,4 @@
-FROM postgres:9.6-alpine
+FROM alpine:3.10
 
 ENV SYS_USER barman
 ENV SYS_GROUP barman
@@ -8,14 +8,12 @@ RUN set -eux; \
 	getent group ${SYS_GROUP} || addgroup -S ${SYS_GROUP}; \
 	getent passwd ${SYS_USER} || adduser -S ${SYS_USER}  -G ${SYS_GROUP} -s "/bin/bash" -h /home/barman/;
 
-RUN rm -rf /var/cache/apk/* && \
-    rm -rf /tmp/*
 
 RUN set -ex \
-	apk update && \
-  apk --update upgrade && \
-	apk --update add --no-cache  ca-certificates su-exec bash inotify-tools logrotate busybox-suid openssl \
-	                        python3 py3-psycopg2
+   && apk update
+	 && apk --update upgrade \
+	 && apk --update add --no-cache  ca-certificates su-exec bash inotify-tools logrotate busybox-suid\
+	                        postgresql-client python3 py3-psycopg2
 
 ADD barman/crontab /etc/cron.d/barman
 
