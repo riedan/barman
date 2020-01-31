@@ -46,7 +46,7 @@ echo "$BACKUP_SCHEDULE barman backup all" >> /var/spool/cron/crontabs/${SYS_USER
 
 if [ -n "$RSYNC_SCHEDULE" ] && [ -n "$RSYNC_BACKUP_DIR" ]; then
   echo ">>>>>> Rsync Backup schedule is $RSYNC_SCHEDULE"
-  echo "$RSYNC_SCHEDULE  rsync -avzog  --delete-after   $BACKUP_DIR/.*   $RSYNC_BACKUP_DIR/." >> /var/spool/cron/crontabs/${SYS_USER}
+  echo "$RSYNC_SCHEDULE  rsync -avzog  --delete-after   $BACKUP_DIR/*   $RSYNC_BACKUP_DIR/" >> /var/spool/cron/crontabs/${SYS_USER}
 fi
 
 chmod 0644 /var/spool/cron/crontabs/${SYS_USER}
