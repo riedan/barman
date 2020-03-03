@@ -42,7 +42,7 @@ rm -rf /var/spool/cron/crontabs/*
 echo '>>> SETUP BARMAN CRON'
 echo ">>>>>> Backup schedule is $BACKUP_SCHEDULE"
 echo  "*/1 * * * * cd /home/barman && /usr/local/bin/barman_docker/wal-receiver.sh" > /var/spool/cron/crontabs/${SYS_USER}
-echo "$BACKUP_SCHEDULE barman backup all" >> /var/spool/cron/crontabs/${SYS_USER}
+echo "$BACKUP_SCHEDULE barman backup all --wait" >> /var/spool/cron/crontabs/${SYS_USER}
 
 if [ -n "$RSYNC_SCHEDULE" ] && [ -n "$RSYNC_BACKUP_DIR" ]; then
   echo ">>>>>> Rsync Backup schedule is $RSYNC_SCHEDULE"
